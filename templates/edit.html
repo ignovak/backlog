@@ -18,15 +18,7 @@
     <dl>
       <dt><label for='priority'>priority</label></dt>
       <dd>
-        <select name='priority' id='priority'>
-          {% for priority in 123456789|make_list %}
-            <option value='{{ priority }}'
-              {% if priority == item.priority %}
-                selected='selected'
-              {% endif %}
-            >{{ priority }}</option>
-          {% endfor %}
-        </select>
+        <input type='range' name='priority' value='{{ item.priority }}' min='1' max='99' step='1' />
       </dd>
     </dl>
     <dl>
@@ -35,7 +27,7 @@
         <select name='type' id='type'>
           {% for type in types %}
             <option value='{{ type }}'
-              {% if type == item.type %}
+              {% if type == itemType %}
                 selected='selected'
               {% endif %}
             >{{ type }}</option>

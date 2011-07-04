@@ -12,4 +12,7 @@ th {
   width: 300px;
   text-align: left;
 }
+tfoot th {
+  padding-top: 10px;
+}
 

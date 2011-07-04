@@ -26,14 +26,19 @@
                 <td>{{ item.desc }}</td>
                 <td>{{ item.priority }}</td>
                 <td><a href='/{{ item.key.id }}/edit'>Edit</a></td>
-                <td><a href='/{{ item.key.id }}/close'>Close</a></td>
+                <td><a href='/{{ item.key.id }}/close' class='close'>Close</a></td>
               </tr>
             {% endfor %}
           </tbody>
+          <tfoot>
+            <tr><th><a href='/new?type={{ type }}'>New item</a></th></tr>
+          </tfoot>
         </table>
       </li>
     {% endfor %}
   </ul>
-  <a href='/new'>New item</a>
+
+  <script src='static/jquery.min.js'></script>
+  <script src='static/main.js'></script>
 </body>
 </html>

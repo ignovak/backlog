@@ -24,7 +24,8 @@ class MainHandler(webapp.RequestHandler):
     params = {
       'action': '/',
       'types': BacklogItem.TYPES,
-      'itemsDict': itemsDict
+      'itemsDict': itemsDict,
+      'itemType': self.request.get('type')
     }
     self.response.out.write(template.render(path, params))
 
@@ -53,7 +54,8 @@ class ItemHandler(webapp.RequestHandler):
     params = {
       'action': '/%s/edit' % id,
       'types': BacklogItem.TYPES,
-      'item': item
+      'item': item,
+      'itemType': item.type
     }
     self.response.out.write(template.render(path, params))
 

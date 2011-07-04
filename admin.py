@@ -13,7 +13,8 @@ class OpenItems(webapp.RequestHandler):
   def get(self):
     return
     for item in BacklogItem.all():
-      item.opened = True
+      # item.opened = True
+      item.priority *= 10
       item.put()
 
 def main():
