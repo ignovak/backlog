@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <meta charset='utf-8'>
+  <title>Backlog</title>
+  <link rel='stylesheet' href='static/main.css' type='text/css' charset='utf-8' />
+</head>
+<body>
+  <h1>Backlog</h1>
+  <ul>
+    {% for type, items in itemsDict.items %}
+      <li>
+        <h2>{{ type }}</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <td>Description</td>
+              <td>Priority</td>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in items %}
+              <tr>
+                <th><a href='/{{ item.key.id }}'>{{ item.name }}</a></th>
+                <td>{{ item.desc }}</td>
+                <td>{{ item.priority }}</td>
+                <td><a href='/{{ item.key.id }}/edit'>Edit</a></td>
+                <td><a href='/{{ item.key.id }}/close'>Close</a></td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </li>
+    {% endfor %}
+  </ul>
+  <a href='/new'>New item</a>
+</body>
+</html>

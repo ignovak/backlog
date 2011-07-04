@@ -1,0 +1,15 @@
+li {
+  list-style: none;
+}
+table {
+  border-spacing: 20px 0;
+}
+thead {
+  font-size: 120%;
+  font-weight: bold;
+}
+th {
+  width: 300px;
+  text-align: left;
+}
+

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <meta charset='utf-8'>
+  <title>New item</title>
+</head>
+<body>
+  <h1>New item</h1>
+  <form action='{{ action }}' method='post'>
+    <dl>
+      <dt><label for='name'>Item name</label></dt>
+      <dd><input type='text' name='name' value='{{ item.name }}' id='name' /></dd>
+    </dl>
+    <dl>
+      <dt><label for='desc'>Item description</label></dt>
+      <dd><textarea name='desc' id='desc' rows='8' cols='40'>{{ item.desc }}</textarea></dd>
+    </dl>
+    <dl>
+      <dt><label for='priority'>priority</label></dt>
+      <dd>
+        <select name='priority' id='priority'>
+          {% for priority in 123456789|make_list %}
+            <option value='{{ priority }}'
+              {% if priority == item.priority %}
+                selected='selected'
+              {% endif %}
+            >{{ priority }}</option>
+          {% endfor %}
+        </select>
+      </dd>
+    </dl>
+    <dl>
+      <dt><label for='type'>Type</label></dt>
+      <dd>
+        <select name='type' id='type'>
+          {% for type in types %}
+            <option value='{{ type }}'
+              {% if type == item.type %}
+                selected='selected'
+              {% endif %}
+            >{{ type }}</option>
+          {% endfor %}
+        </select>
+      </dd>
+    </dl>
+    <dl>
+      <dt></dt>
+      <dd><input type='submit' value='Submit' /></dd>
+    </dl>
+  </form>
+  <a href='/'>Back to main page</a>
+</body>
+</html>
