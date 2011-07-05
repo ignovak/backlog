@@ -62,7 +62,7 @@ $('.bl-new').click(function() {
   var item = $(html).initItem().insertBefore($(this)).dblclick();
   item.find('.name').find('input').focus();
   item.find('.close').hide();
-  item.find('.update').find('a').text('Create').click(function() {
+  item.find('.update').find('a').text('Create').unbind('click').click(function() {
     updateItem(this.href, item, function() {
       cancelChanges(item);
     });
@@ -90,3 +90,11 @@ function cancelChanges(item) {
   item.find('.desc').text(item.find('.desc').find('textarea').val());
   item.find('.priority').text(item.find('.priority').find('input').val());
 };
+
+$('a', '.remove').click(function() {
+  var $this = $(this);
+  $.get(this.href, function() {
+    $this.parents('.bl-item').hide();
+  });
+  return false
+});

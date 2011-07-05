@@ -9,6 +9,10 @@ class Test(webapp.RequestHandler):
   def get(self):
     self.response.out.write('lol')
 
+class RemoveItem(webapp.RequestHandler):
+  def get(self, id):
+    BacklogItem.get_by_id(int(id)).delete()
+
 class OpenItems(webapp.RequestHandler):
   def get(self):
     return
@@ -20,6 +24,7 @@ class OpenItems(webapp.RequestHandler):
 def main():
   application = webapp.WSGIApplication([
     ('/admin/openItems', OpenItems),
+    ('/admin/(\d+)/remove', RemoveItem),
     ('/admin/test', Test)
     ], debug=True)
   util.run_wsgi_app(application)
