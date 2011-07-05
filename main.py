@@ -8,9 +8,9 @@ import os
 import logging
 
 class BacklogItem(db.Model):
-  TYPES = ('AIR', 'Hub', 'Website')
+  TYPES = ['AIR', 'Website', 'Hub']
   name = db.StringProperty()
-  type = db.StringProperty(choices = TYPES)
+  type = db.StringProperty(choices = set(TYPES))
   desc = db.TextProperty()
   priority = db.IntegerProperty()
   opened = db.BooleanProperty(default=True)
@@ -36,15 +36,18 @@ class MainHandler(webapp.RequestHandler):
         desc = self.request.get('desc'),
         priority = int(self.request.get('priority'))
     ).put()
-    self.redirect('/')
+
+    if not self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+      self.redirect('/')
 
 class ItemHandler(webapp.RequestHandler):
   def get(self, id, action):
     if action == 'close':
+      return
       item = BacklogItem.get_by_id(int(id))
       item.opened = False
       item.put()
-      self.redirect('/')
+      self.__redirect('/')
       return
 
     action = 'edit' if action == 'edit' else 'show'
@@ -66,7 +69,11 @@ class ItemHandler(webapp.RequestHandler):
     item.desc = self.request.get('desc')
     item.priority = int(self.request.get('priority'))
     item.put()
-    self.redirect('/')
+    self.__redirect('/')
+
+  def __redirect(self, path):
+    if not self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+      self.redirect(path)
 
 def main():
   application = webapp.WSGIApplication([

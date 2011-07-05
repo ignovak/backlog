@@ -7,36 +7,31 @@
 </head>
 <body>
   <h1>Backlog</h1>
-  <ul>
     {% for type, items in itemsDict.items %}
-      <li>
+      <section>
         <h2>{{ type }}</h2>
-        <table>
-          <thead>
-            <tr>
-              <th>Name</th>
-              <td>Description</td>
-              <td>Priority</td>
-            </tr>
-          </thead>
-          <tbody>
-            {% for item in items %}
-              <tr>
-                <th><a href='/{{ item.key.id }}'>{{ item.name }}</a></th>
-                <td>{{ item.desc }}</td>
-                <td>{{ item.priority }}</td>
-                <td><a href='/{{ item.key.id }}/edit'>Edit</a></td>
-                <td><a href='/{{ item.key.id }}/close' class='close'>Close</a></td>
-              </tr>
-            {% endfor %}
-          </tbody>
-          <tfoot>
-            <tr><th><a href='/new?type={{ type }}'>New item</a></th></tr>
-          </tfoot>
-        </table>
-      </li>
+        <ul>
+          <li class='bl-header'>
+            <div class='bl-item-field name'>Name</div>
+            <div class='bl-item-field desc'>Description</div>
+            <div class='bl-item-field priority'>Priority</div>
+            <div class='clear'></div>
+          </li>
+          {% for item in items %}
+            <li class='bl-item'>
+              <div class='bl-item-field name'><a href='/{{ item.key.id }}'>{{ item.name }}</a></div>
+              <div class='bl-item-field desc'>{{ item.desc }}</div>
+              <div class='bl-item-field priority'>{{ item.priority }}</div>
+              <div class='bl-item-field cancel'><a href='#'>Cancel</a></div>
+              <div class='bl-item-field update'><a href='/{{ item.key.id }}/edit'>Edit</a></div>
+              <div class='bl-item-field close'><a href='/{{ item.key.id }}/close'>Close</a></div>
+              <div class='clear'></div>
+            </li>
+          {% endfor %}
+          <li class='bl-item'><a href='/new?type={{ type }}'>New item</a></li>
+        </ul>
+      </section>
     {% endfor %}
-  </ul>
 
   <script src='static/jquery.min.js'></script>
   <script src='static/main.js'></script>
