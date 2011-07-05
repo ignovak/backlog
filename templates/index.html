@@ -10,7 +10,7 @@
     {% for type, items in itemsDict.items %}
       <section>
         <h2>{{ type }}</h2>
-        <ul>
+        <ul class='bl-items-list'>
           <li class='bl-header'>
             <div class='bl-item-field name'>Name</div>
             <div class='bl-item-field desc'>Description</div>
@@ -23,12 +23,12 @@
               <div class='bl-item-field desc'>{{ item.desc }}</div>
               <div class='bl-item-field priority'>{{ item.priority }}</div>
               <div class='bl-item-field cancel'><a href='#'>Cancel</a></div>
-              <div class='bl-item-field update'><a href='/{{ item.key.id }}/edit'>Edit</a></div>
+              <div class='bl-item-field edit'><a href='/{{ item.key.id }}/edit'>Edit</a></div>
               <div class='bl-item-field close'><a href='/{{ item.key.id }}/close'>Close</a></div>
               <div class='clear'></div>
             </li>
           {% endfor %}
-          <li class='bl-item'><a href='/new?type={{ type }}'>New item</a></li>
+          <li class='bl-new'><a href='/new?type={{ type }}'>New item</a></li>
         </ul>
       </section>
     {% endfor %}

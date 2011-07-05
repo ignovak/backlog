@@ -43,7 +43,6 @@ class MainHandler(webapp.RequestHandler):
 class ItemHandler(webapp.RequestHandler):
   def get(self, id, action):
     if action == 'close':
-      return
       item = BacklogItem.get_by_id(int(id))
       item.opened = False
       item.put()
