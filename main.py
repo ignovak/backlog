@@ -6,6 +6,9 @@ from google.appengine.ext.webapp import util, template
 
 import os
 import logging
+import simplejson
+
+import view
 
 class BacklogItem(db.Model):
   TYPES = ['AIR', 'Website', 'Hub']
@@ -20,14 +23,25 @@ class MainHandler(webapp.RequestHandler):
     action = 'edit' if action == 'new' else 'index'
 
     path = os.path.join('templates/%s.html' % action)
-    itemsDict = dict(map(lambda t: (t, BacklogItem.all().filter('opened =', True).filter('type =', t).order('-priority')), BacklogItem.TYPES))
+    items = BacklogItem.all().filter('opened =', True).order('-priority')
     params = {
       'action': '/',
       'types': BacklogItem.TYPES,
-      'itemsDict': itemsDict,
+      'items': items,
       'itemType': self.request.get('type')
     }
     self.response.out.write(template.render(path, params))
+    return
+    if self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+      resp = dict(map(lambda x: (x.key().id(), {
+        'type': x.type,
+        'name': x.name,
+        'desc': x.desc,
+        'priority': x.priority,
+        'opened': x.opened
+      }), items))
+      self.response.headers['Content-Type'] = 'text/plain'
+      self.response.out.write(simplejson.dumps(resp))
 
   def post(self, action):
     BacklogItem(
