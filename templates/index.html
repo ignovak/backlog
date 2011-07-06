@@ -17,24 +17,20 @@
             <div class='bl-item-field priority'>Priority</div>
             <div class='clear'></div>
           </li>
-          {% for item in items %}
-            {% if item.type == type %}
-              <li class='bl-item'>
-                <div class='bl-item-field name'><a href='/{{ item.key.id }}'>{{ item.name }}</a></div>
-                <div class='bl-item-field desc'>{{ item.desc }}</div>
-                <div class='bl-item-field priority'>{{ item.priority }}</div>
-                <div class='bl-item-field cancel'><a href='#'>Cancel</a></div>
-                <div class='bl-item-field edit'><a href='/{{ item.key.id }}/edit'>Edit</a></div>
-                <div class='bl-item-field close'><a href='/{{ item.key.id }}/close'>Close</a></div>
-                <!-- <div class='bl-item-field remove'><a href='/admin/{{ item.key.id }}/remove'>Remove</a></div> -->
-                <div class='clear'></div>
-              </li>
-            {% endif %}
-          {% endfor %}
           <li class='bl-new'><a href='/new?type={{ type }}'>New item</a></li>
         </ul>
       </section>
     {% endfor %}
+
+    <li class='bl-item' data-id='{ id }'>
+      <div class='bl-item-field name'>{ name }</div>
+      <div class='bl-item-field desc'>{ desc }</div>
+      <div class='bl-item-field cancel'><a href='#'>Cancel</a></div>
+      <div class='bl-item-field update'><a href='#'>Edit</a></div>
+      <div class='bl-item-field close'><a href='#'>Close</a></div>
+      <!-- <div class='bl-item-field remove'><a href='/admin/{{ item.key.id }}/remove'>Remove</a></div> -->
+      <div class='clear'></div>
+    </li>
 
   <script src='static/jquery.min.js'></script>
   <script src='static/main.js'></script>

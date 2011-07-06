@@ -43,9 +43,9 @@ $.fn.initItem = function () {
   return this
 };
 
-$('.bl-item').each(function() {
-  $(this).initItem();
-});
+// $('.bl-item').each(function() {
+//   $(this).initItem();
+// });
 
 $('.bl-new').click(function() {
   var html = " \
@@ -98,3 +98,7 @@ $('a', '.remove').click(function() {
   });
   return false
 });
+
+$.get('/', function(data) {
+  console.log(data);
+}, 'json');

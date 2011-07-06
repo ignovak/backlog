@@ -8,8 +8,6 @@ import os
 import logging
 import simplejson
 
-import view
-
 class BacklogItem(db.Model):
   TYPES = ['AIR', 'Website', 'Hub']
   name = db.StringProperty()
@@ -20,19 +18,8 @@ class BacklogItem(db.Model):
 
 class MainHandler(webapp.RequestHandler):
   def get(self, action):
-    action = 'edit' if action == 'new' else 'index'
-
-    path = os.path.join('templates/%s.html' % action)
-    items = BacklogItem.all().filter('opened =', True).order('-priority')
-    params = {
-      'action': '/',
-      'types': BacklogItem.TYPES,
-      'items': items,
-      'itemType': self.request.get('type')
-    }
-    self.response.out.write(template.render(path, params))
-    return
     if self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+      items = BacklogItem.all().filter('opened =', True)#.order('-priority')
       resp = dict(map(lambda x: (x.key().id(), {
         'type': x.type,
         'name': x.name,
@@ -42,6 +29,15 @@ class MainHandler(webapp.RequestHandler):
       }), items))
       self.response.headers['Content-Type'] = 'text/plain'
       self.response.out.write(simplejson.dumps(resp))
+      return
+
+    action = 'edit' if action == 'new' else 'index'
+
+    path = os.path.join('templates/%s.html' % action)
+    params = {
+      'types': BacklogItem.TYPES,
+    }
+    self.response.out.write(template.render(path, params))
 
   def post(self, action):
     BacklogItem(
