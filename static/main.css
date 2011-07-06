@@ -8,7 +8,7 @@ ul.bl-items-list > li {
   border: 1px solid transparent;
   border-radius: 5px;
   padding-left: 20px;
-  width: 1160px;
+  width: 900px;
   display: block;
   clear: both;
 }
@@ -20,6 +20,9 @@ li.bl-item .cancel, li.bl-item .update {
 }
 li.bl-item.active .cancel, li.bl-item.active .update {
   display: inline;
+}
+li.bl-item.active {
+  width: 1160px;
 }
 li.bl-item:hover {
   background-color: #ffc;

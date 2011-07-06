@@ -1,14 +1,13 @@
+var backlog;
+
 $.fn.initItem = function () {
   var $this = $(this);
-  $this.find('.name').text($this.find('.name').find('a').text());
-  $this.find('.edit').removeClass('edit').addClass('update');
-
   $this.find('.cancel').find('a').click(function() {
     cancelChanges($this);
   });
 
-  $this.find('.update').find('a').text('Update').click(function() {
-    updateItem(this.href, $this, function() {
+  $this.find('.update').find('a').click(function() {
+    updateItem('/' + $this.data('id') + '/edit', $this, function() {
       $this.find('.cancel').find('a').click();
     });
     return false
@@ -16,7 +15,7 @@ $.fn.initItem = function () {
 
   $this.find('.close').find('a').click(function() {
     if ( confirm('Are your sure?') ) { 
-      $.get(this.href, function() {
+      $.get('/' + $this.data('id') + '/close', function() {
         $this.hide();
       });
     };
@@ -43,12 +42,13 @@ $.fn.initItem = function () {
   return this
 };
 
-// $('.bl-item').each(function() {
-//   $(this).initItem();
-// });
-
-$('.bl-new').click(function() {
-  var html = " \
+$('a', '.bl-new').click(function() {
+  var html = $('#template').clone().fillTemplate({
+      type: '',
+      name: '',
+      priority: 50
+    })[0].innerHTML;
+  var htmlo = " \
     <li class='bl-item'> \
     <div class='bl-item-field name'><a href='#'></a></div> \
     <div class='bl-item-field desc'></div> \
@@ -63,7 +63,7 @@ $('.bl-new').click(function() {
   item.find('.name').find('input').focus();
   item.find('.close').hide();
   item.find('.update').find('a').text('Create').unbind('click').click(function() {
-    updateItem(this.href, item, function() {
+    updateItem('/', item, function() {
       cancelChanges(item);
     });
     return false
@@ -100,7 +100,7 @@ $('a', '.remove').click(function() {
 });
 
 $.get('/', function(data) {
-  info = data.data
+  backlog = data.data;
   $('section').each(function() {
     var $this = $(this);
     var html = $('#template').clone().fillTemplate(data.data.filter(function (i) {
@@ -110,4 +110,16 @@ $.get('/', function(data) {
     }))[0].innerHTML;
     $(html).insertAfter($this.find('.bl-header'));
   });
+  $('.bl-item').each(function() {
+    $(this).initItem();
+  });
 }, 'json');
+
+function getItemById(id) {
+  for (var i = 0, l = backlog.length; i < l; i++) {
+    if ( backlog[i].id == id ) { 
+      return backlog[i]
+    };
+  };
+  console.error('item not found');
+};
