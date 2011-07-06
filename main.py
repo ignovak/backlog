@@ -20,15 +20,17 @@ class MainHandler(webapp.RequestHandler):
   def get(self, action):
     if self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
       items = BacklogItem.all().filter('opened =', True)#.order('-priority')
-      resp = dict(map(lambda x: (x.key().id(), {
+      # resp = dict(map(lambda x: (x.key().id(), {
+      resp = map(lambda x: {
+        'id': x.key().id(),
         'type': x.type,
         'name': x.name,
         'desc': x.desc,
         'priority': x.priority,
         'opened': x.opened
-      }), items))
+      }, items)
       self.response.headers['Content-Type'] = 'text/plain'
-      self.response.out.write(simplejson.dumps(resp))
+      self.response.out.write(simplejson.dumps({'data': resp}))
       return
 
     action = 'edit' if action == 'new' else 'index'
