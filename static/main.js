@@ -100,5 +100,14 @@ $('a', '.remove').click(function() {
 });
 
 $.get('/', function(data) {
-  console.log(data);
+  info = data.data
+  $('section').each(function() {
+    var $this = $(this);
+    var html = $('#template').clone().fillTemplate(data.data.filter(function (i) {
+      return i.type == $this.find('h2').text();
+    }).sort(function (a, b) {
+      return b.priority - a.priority;
+    }))[0].innerHTML;
+    $(html).insertAfter($this.find('.bl-header'));
+  });
 }, 'json');

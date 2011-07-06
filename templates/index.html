@@ -22,17 +22,21 @@
       </section>
     {% endfor %}
 
-    <li class='bl-item' data-id='{ id }'>
-      <div class='bl-item-field name'>{ name }</div>
-      <div class='bl-item-field desc'>{ desc }</div>
-      <div class='bl-item-field cancel'><a href='#'>Cancel</a></div>
-      <div class='bl-item-field update'><a href='#'>Edit</a></div>
-      <div class='bl-item-field close'><a href='#'>Close</a></div>
-      <!-- <div class='bl-item-field remove'><a href='/admin/{{ item.key.id }}/remove'>Remove</a></div> -->
-      <div class='clear'></div>
-    </li>
+    <ul id='template'>
+      <li class='bl-item' data-id='${id}'>
+        <div class='bl-item-field name'>${name}</div>
+        <div class='bl-item-field desc'>${desc}</div>
+        <div class='bl-item-field priority'>${priority}</div>
+        <div class='bl-item-field cancel'><a href='#'>Cancel</a></div>
+        <div class='bl-item-field update'><a href='#'>Edit</a></div>
+        <div class='bl-item-field close'><a href='#'>Close</a></div>
+        <!-- <div class='bl-item-field remove'><a href='/admin/{{ item.key.id }}/remove'>Remove</a></div> -->
+        <div class='clear'></div>
+      </li>
+    </ul>
 
   <script src='static/jquery.min.js'></script>
+  <script src='static/jquery.jsrepeater.js'></script>
   <script src='static/main.js'></script>
 </body>
 </html>
