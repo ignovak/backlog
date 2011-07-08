@@ -9,7 +9,7 @@ $.fn.initItem = function () {
   });
 
   $this.find('.update').find('a').click(function() {
-    updateItem('/' + $this.data('id') + '/edit', $this, function() {
+    updateItem('/' + $this.attr('id') + '/edit', $this, function() {
       $this.find('.cancel').find('a').click();
     });
     return false
@@ -17,7 +17,7 @@ $.fn.initItem = function () {
 
   $this.find('.close').find('a').click(function() {
     if ( confirm('Are your sure?') ) { 
-      $.get('/' + $this.data('id') + '/close', function() {
+      $.get('/' + $this.attr('id') + '/close', function() {
         $this.hide();
       });
     };
@@ -107,8 +107,20 @@ $.get('/', function(data) {
   });
   $('.bl-items-list').sortable({
       opacity: 0.7,
-      cursor: 'hand'
-    })
+      cursor: 'move',
+      items: '> .bl-item',
+      // revert: true,
+      update: function (e, ui) {
+        var $item = $(ui.item);
+        var prevPr = parseInt($item.prev('.bl-item').find('.priority').text());
+        var nextPr = parseInt($item.next('.bl-item').find('.priority').text());
+        if ( isNaN(prevPr) ) prevPr = nextPr + 10;
+        if ( isNaN(nextPr) ) nextPr = 0;
+        var itemPr = Math.floor((prevPr + nextPr) / 2);
+        $item.find('.priority').text(itemPr);
+        $.post('/' + $item.attr('id') + '/reorder', { priority: itemPr });
+      }
+    });
 }, 'json');
 
 function getItemById(id) {

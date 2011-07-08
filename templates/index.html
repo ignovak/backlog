@@ -14,7 +14,7 @@
           <li class='bl-header'>
             <div class='bl-item-field name'>Name</div>
             <div class='bl-item-field desc'>Description</div>
-            <div class='bl-item-field priority'>Priority</div>
+            <!-- <div class='bl-item-field priority'>Priority</div> -->
             <div class='clear'></div>
           </li>
           <li class='bl-new'><a href='/new?type={{ type }}'>New item</a></li>
@@ -23,7 +23,7 @@
     {% endfor %}
 
     <ul id='template'>
-      <li class='bl-item' data-id='${id}'>
+      <li id='${id}' class='bl-item'>
         <div class='bl-item-field name'>${name}</div>
         <div class='bl-item-field desc'>${desc}</div>
         <div class='bl-item-field priority'>${priority}</div>

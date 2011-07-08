@@ -1,0 +1,12 @@
+transformers:
+- kind: BacklogItem
+  connector: csv
+  property_map:
+    - property: name
+      external_name: name
+    - property: desc
+      external_name: desc
+    - property: priority
+      external_name: priority
+    - property: opened
+      external_name: opened

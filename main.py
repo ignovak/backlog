@@ -10,10 +10,12 @@ import simplejson
 
 class BacklogItem(db.Model):
   TYPES = ['AIR', 'Website', 'Hub']
+  STATUSES = ['new', 'assigned', 'processed', 'completed', 'closed']
   name = db.StringProperty()
   type = db.StringProperty(choices = set(TYPES))
   desc = db.TextProperty()
   priority = db.IntegerProperty()
+  status = db.StringProperty(choices = set(STATUSES))
   opened = db.BooleanProperty(default=True)
 
 class MainHandler(webapp.RequestHandler):
@@ -45,8 +47,8 @@ class MainHandler(webapp.RequestHandler):
     BacklogItem(
         name = self.request.get('name'),
         type = self.request.get('type'),
-        desc = self.request.get('desc'),
-        priority = int(self.request.get('priority'))
+        desc = self.request.get('desc')
+        # priority = int(self.request.get('priority'))
     ).put()
 
     if not self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
@@ -74,10 +76,12 @@ class ItemHandler(webapp.RequestHandler):
     self.response.out.write(template.render(path, params))
 
   def post(self, id, action):
+
     item = BacklogItem.get_by_id(int(id))
-    item.name = self.request.get('name')
-    item.type = self.request.get('type')
-    item.desc = self.request.get('desc')
+    if action != 'reorder':
+      item.name = self.request.get('name')
+      item.type = self.request.get('type')
+      item.desc = self.request.get('desc')
     item.priority = int(self.request.get('priority'))
     item.put()
     self.__redirect('/')
