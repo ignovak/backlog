@@ -16,20 +16,18 @@ class BacklogItem(db.Model):
   desc = db.TextProperty()
   priority = db.IntegerProperty()
   status = db.StringProperty(choices = set(STATUSES))
-  opened = db.BooleanProperty(default=True)
 
 class MainHandler(webapp.RequestHandler):
   def get(self, action):
     if self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-      items = BacklogItem.all().filter('opened =', True)#.order('-priority')
-      # resp = dict(map(lambda x: (x.key().id(), {
+      items = BacklogItem.all()#.filter('status !=', 'closed')#.order('-priority')
       resp = map(lambda x: {
         'id': x.key().id(),
         'type': x.type,
         'name': x.name,
         'desc': x.desc,
         'priority': x.priority,
-        'opened': x.opened
+        'status': x.status
       }, items)
       self.response.headers['Content-Type'] = 'text/plain'
       self.response.out.write(simplejson.dumps({'data': resp}))
@@ -58,7 +56,7 @@ class ItemHandler(webapp.RequestHandler):
   def get(self, id, action):
     if action == 'close':
       item = BacklogItem.get_by_id(int(id))
-      item.opened = False
+      item.status = 'closed'
       item.put()
       self.__redirect('/')
       return

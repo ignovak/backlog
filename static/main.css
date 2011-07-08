@@ -24,10 +24,30 @@ li.bl-item.active .cancel, li.bl-item.active .update {
 li.bl-item.active {
   width: 1160px;
 }
-li.bl-item:hover {
-  background-color: #ffc;
-  border-color: #fc6;
+
+li.bl-item.assigned {
+  background-color: #fc9;
+  border-color: #f96;
 }
+li.bl-item.processed {
+  background-color: #cc6;
+  border-color: #993;
+}
+li.bl-item.complited {
+  background-color: #cfc;
+  border-color: #9c9;
+}
+li.bl-item.closed {
+  background-color: #36c;
+  border-color: #039;
+  display: none;
+}
+li.bl-item:hover {
+  /* background-color: #ffc; */
+  /* border-color: #fc6; */
+  cursor: pointer;
+}
+
 li.bl-header {
   font-weight: bold;
 }
@@ -53,5 +73,5 @@ li.bl-header {
   display: none;
 }
 .priority {
-  /* display: none; */
+  display: none;
 }

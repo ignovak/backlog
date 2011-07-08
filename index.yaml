@@ -12,6 +12,11 @@ indexes:
 
 - kind: BacklogItem
   properties:
+  - name: __key__
+    direction: desc
+
+- kind: BacklogItem
+  properties:
   - name: opened
   - name: priority
     direction: desc
