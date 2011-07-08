@@ -2,8 +2,10 @@ var backlog;
 
 $.fn.initItem = function () {
   var $this = $(this);
+
   $this.find('.cancel').find('a').click(function() {
     cancelChanges($this);
+    return false
   });
 
   $this.find('.update').find('a').click(function() {
@@ -43,23 +45,13 @@ $.fn.initItem = function () {
 };
 
 $('a', '.bl-new').click(function() {
-  var html = $('#template').clone().fillTemplate({
+  var item = $('#template').clone().fillTemplate({
       type: '',
+      desc: '',
       name: '',
       priority: 50
-    })[0].innerHTML;
-  var htmlo = " \
-    <li class='bl-item'> \
-    <div class='bl-item-field name'><a href='#'></a></div> \
-    <div class='bl-item-field desc'></div> \
-    <div class='bl-item-field priority'>50</div> \
-    <div class='bl-item-field cancel'><a href='#'>Cancel</a></div> \
-    <div class='bl-item-field update'><a href='/'>Edit</a></div> \
-    <div class='bl-item-field close'><a href=''>Close</a></div> \
-    <div class='clear'></div> \
-    </li> \
-    ";
-  var item = $(html).initItem().insertBefore($(this)).dblclick();
+    }).find('.bl-item').initItem().insertBefore($(this).parent()).dblclick();
+  // var item = $(html).initItem().insertBefore($(this)).dblclick();
   item.find('.name').find('input').focus();
   item.find('.close').hide();
   item.find('.update').find('a').text('Create').unbind('click').click(function() {
@@ -113,6 +105,10 @@ $.get('/', function(data) {
   $('.bl-item').each(function() {
     $(this).initItem();
   });
+  $('.bl-items-list').sortable({
+      opacity: 0.7,
+      cursor: 'hand'
+    })
 }, 'json');
 
 function getItemById(id) {
