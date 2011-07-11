@@ -43,6 +43,26 @@
   <script src='static/jquery.min.js'></script>
   <script src='static/jquery-ui.custom.min.js'></script>
   <script src='static/jquery.jsrepeater.js'></script>
+  <script src='/_ah/channel/jsapi'></script>
   <script src='static/main.js'></script>
+  <!-- <script src='channel.js'></script> -->
+
+  <script charset='utf-8'>
+    openChannel = function() {
+      var token = '{{ token }}';
+      var channel = new goog.appengine.Channel(token);
+      var handler = {
+        'onopen': onOpened,
+        'onmessage': onMessage,
+        'onerror': function() {},
+        'onclose': function() {}
+      };
+      var socket = channel.open(handler);
+      socket.onopen = onOpened;
+      socket.onmessage = onMessage;
+    }
+
+    setTimeout(openChannel, 100);
+  </script>
 </body>
 </html>

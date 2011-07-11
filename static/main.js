@@ -177,3 +177,24 @@ $('h2').click(function() {
 //   };
 //   console.error('item not found');
 // };
+
+sendMessage = function(path, opt_param) {
+  // path += '?g=' + state.game_key;
+  // if (opt_param) {
+  //   path += '&' + opt_param;
+  // }
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', path, true);
+  xhr.send();
+};
+
+function onOpened() {
+  sendMessage('/opened');
+  console.log('opened');
+};
+
+function onMessage(m) {
+  console.log('message');
+  console.log(m);
+};
+

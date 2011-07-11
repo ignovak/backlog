@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 #-*- coding: utf-8 -*-
 
+from google.appengine.api import channel
 from google.appengine.ext import webapp, db
 from google.appengine.ext.webapp import util, template
 
@@ -16,6 +17,12 @@ class BacklogItem(db.Model):
   desc = db.TextProperty()
   priority = db.IntegerProperty()
   status = db.StringProperty(choices = set(STATUSES))
+
+class OpenedPage(webapp.RequestHandler):
+  def post(self):
+    channel.send_message('testtest', {
+        "test": "test"
+      })
 
 class MainHandler(webapp.RequestHandler):
   def get(self, action):
@@ -43,7 +50,8 @@ class MainHandler(webapp.RequestHandler):
     path = os.path.join('templates/%s.html' % action)
     params = {
       'types': BacklogItem.TYPES,
-      'statuses': BacklogItem.STATUSES
+      'statuses': BacklogItem.STATUSES,
+      'token': channel.create_channel('testtest')
     }
     self.response.out.write(template.render(path, params))
 
