@@ -20,16 +20,21 @@ class BacklogItem(db.Model):
 class MainHandler(webapp.RequestHandler):
   def get(self, action):
     if self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-      items = BacklogItem.all()#.filter('status !=', 'closed')#.order('-priority')
-      resp = map(lambda x: {
-        'id': x.key().id(),
-        'type': x.type,
-        'name': x.name,
-        'desc': x.desc,
-        'priority': x.priority,
-        'status': x.status
-      }, items)
       self.response.headers['Content-Type'] = 'text/plain'
+
+      items = BacklogItem.all()#.filter('status !=', 'closed')#.order('-priority')
+
+      if action == 'getOrder':
+        resp = map(lambda x: str(x.key().id()) + '=' + str(x.priority), items)
+      else:
+        resp = map(lambda x: {
+          'id': x.key().id(),
+          'type': x.type,
+          'name': x.name,
+          'desc': x.desc,
+          'priority': x.priority,
+          'status': x.status
+        }, items)
       self.response.out.write(simplejson.dumps({'data': resp}))
       return
 

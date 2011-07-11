@@ -1,4 +1,5 @@
 // var backlog;
+var orderList;
 
 $.fn.initItem = function () {
   var $this = $(this);
@@ -110,12 +111,19 @@ $.get('/', function(data) {
       // revert: true,
       update: function (e, ui) {
         var $item = $(ui.item);
+        var id = $item.attr('id');
         var prevPr = parseInt($item.prev('.bl-item').find('.priority').text());
         var nextPr = parseInt($item.next('.bl-item').find('.priority').text());
-        if ( isNaN(prevPr) ) prevPr = nextPr + 10;
+        if ( isNaN(prevPr) ) prevPr = nextPr + 20;
         if ( isNaN(nextPr) ) nextPr = 0;
         var itemPr = Math.floor((prevPr + nextPr) / 2);
         $item.find('.priority').text(itemPr);
+        for (var i = 0, l = orderList.length; i < l; i++) {
+          if ( orderList[i].split('=')[0] == id ) { 
+            orderList[i] = id + '=' + itemPr;
+            break;
+          };
+        };
         $.post('/' + $item.attr('id') + '/update_priority', { priority: itemPr });
       }
     });
@@ -125,6 +133,42 @@ $('h2').click(function() {
   $(this).parent().toggleClass('minimized');
 });
 
+(function getOrder() {
+  $.get('/getOrder', function(data) {
+    // console.log(data.data);
+    // function arraysDiff(a, b) {
+    var diff = data.data.filter(function(i) {
+      return orderList && orderList.indexOf(i) == -1;
+    });
+    diff.forEach(function (v, k) {
+      var el = v.split('=');
+      var id = el[0];
+      var prior = parseInt(el[1]);
+      var item = $('#' + id);
+      if ( parseInt(item.find('.priority').text()) < prior ) {
+        var placeholder = item.prev();
+        while ( parseInt(placeholder.find('.priority').text()) < prior ) { 
+          placeholder = placeholder.prev();
+        };
+        item.insertAfter(placeholder);
+      } else {
+        var placeholder = item.next();
+        while ( parseInt(placeholder.find('.priority').text()) > prior ) { 
+          placeholder = placeholder.next();
+        };
+        item.insertBefore(placeholder);
+      };
+      
+      item.find('.priority').text(prior);
+    });
+    console.log(diff);
+
+    orderList = data.data;
+    // };
+  }, 'json');
+
+  setTimeout(getOrder, 10000);
+})();
 // function getItemById(id) {
 //   for (var i = 0, l = backlog.length; i < l; i++) {
 //     if ( backlog[i].id == id ) { 

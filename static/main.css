@@ -19,7 +19,7 @@ ul.bl-items-list > li {
   border-radius: 5px;
   margin-top: 3px;
   padding-left: 20px;
-  width: 900px;
+  width: 960px;
   display: block;
   overflow: auto;
 }
@@ -33,7 +33,7 @@ li.bl-item.active .cancel, li.bl-item.active .update {
   display: inline;
 }
 li.bl-item.active {
-  width: 1160px;
+  /* width: 1160px; */
 }
 
 li.bl-item.new {
