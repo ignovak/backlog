@@ -37,16 +37,16 @@ li.bl-item.active {
 }
 
 li.bl-item.new {
+  background-color: #cc6;
+  border-color: #993;
+}
+li.bl-item.assigned {
   background-color: #ddf;
   border-color: #bbd;
 }
-li.bl-item.assigned {
+li.bl-item.processed {
   background-color: #fc9;
   border-color: #f96;
-}
-li.bl-item.processed {
-  background-color: #cc6;
-  border-color: #993;
 }
 li.bl-item.completed {
   background-color: #cfc;
@@ -57,10 +57,10 @@ li.bl-item.closed {
   border-color: #039;
   display: none;
 }
-li.bl-item:hover {
+li.bl-item {
   /* background-color: #ffc; */
   /* border-color: #fc6; */
-  cursor: pointer;
+  /* cursor: pointer; */
 }
 
 li.bl-header {

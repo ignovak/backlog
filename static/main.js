@@ -161,7 +161,7 @@ $('h2').click(function() {
       
       item.find('.priority').text(prior);
     });
-    console.log(diff);
+    // console.log(diff);
 
     orderList = data.data;
     // };

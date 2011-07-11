@@ -9,7 +9,7 @@ import logging
 import simplejson
 
 class BacklogItem(db.Model):
-  TYPES = ['Backlog', 'AIR', 'Website', 'Hub']
+  TYPES = ['AIR', 'Website', 'Hub', 'Backlog']
   STATUSES = ['new', 'assigned', 'processed', 'completed', 'closed']
   name = db.StringProperty()
   type = db.StringProperty(choices = set(TYPES))

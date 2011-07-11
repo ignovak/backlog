@@ -23,7 +23,9 @@ class OpenItems(webapp.RequestHandler):
     # return
     for item in BacklogItem.all():
       # item.priority *= 10
-      item.priority = int(item.priority)
+      # item.priority = int(item.priority)
+      if item.status == 'new':
+        item.status = 'assigned'
       item.put()
 
 def main():
