@@ -15,7 +15,6 @@
             <div class='bl-item-field name'>Name</div>
             <div class='bl-item-field desc'>Description</div>
             <!-- <div class='bl-item-field priority'>Priority</div> -->
-            <div class='clear'></div>
           </li>
           <li class='bl-new'><a href='/new?type={{ type }}'>New item</a></li>
         </ul>
@@ -23,15 +22,21 @@
     {% endfor %}
 
     <ul id='template'>
-      <li id='${id}' class='bl-item ${status}'>
+      <li id='${id}' class='bl-item ${status}' data-status='${status}'>
         <div class='bl-item-field name'>${name}</div>
         <div class='bl-item-field desc'>${desc}</div>
         <div class='bl-item-field priority'>${priority}</div>
         <div class='bl-item-field cancel'><a href='#'>Cancel</a></div>
         <div class='bl-item-field update'><a href='#'>Update</a></div>
-        <div class='bl-item-field close'><a href='#'>Close</a></div>
+        <div class='bl-item-field status'>
+          <select>
+            {% for status in statuses %}
+              <option value='{{ status }}'>{{ status }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <!-- <div class='bl-item-field close'><a href='#'>Close</a></div> -->
         <!-- <div class='bl-item-field remove'><a href='/admin/{{ item.key.id }}/remove'>Remove</a></div> -->
-        <div class='clear'></div>
       </li>
     </ul>
 

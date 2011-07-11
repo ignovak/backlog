@@ -9,21 +9,28 @@ class Test(webapp.RequestHandler):
   def get(self):
     self.response.out.write('lol')
 
+class RemoveItems(webapp.RequestHandler):
+  def get(self):
+    return
+    db.delete(BacklogItem.all(keys_only=True))
+
 class RemoveItem(webapp.RequestHandler):
   def get(self, id):
     BacklogItem.get_by_id(int(id)).delete()
 
 class OpenItems(webapp.RequestHandler):
   def get(self):
-    return
+    # return
     for item in BacklogItem.all():
-      item.priority *= 10
+      # item.priority *= 10
+      item.priority = int(item.priority)
       item.put()
 
 def main():
   application = webapp.WSGIApplication([
     ('/admin/openItems', OpenItems),
     ('/admin/(\d+)/remove', RemoveItem),
+    ('/admin/removeItems', RemoveItems),
     ('/admin/test', Test)
     ], debug=True)
   util.run_wsgi_app(application)

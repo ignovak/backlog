@@ -1,4 +1,4 @@
-var backlog;
+// var backlog;
 
 $.fn.initItem = function () {
   var $this = $(this);
@@ -15,13 +15,11 @@ $.fn.initItem = function () {
     return false
   });
 
-  $this.find('.close').find('a').click(function() {
-    if ( confirm('Are your sure?') ) { 
-      $.get('/' + $this.attr('id') + '/close', function() {
-        $this.hide();
-      });
-    };
-    return false
+  $this.find('select').val($this.data('status'));
+  $this.find('select').change(function() {
+    var val = $(this).val();
+    $this.removeClass('assigned processed completed closed').addClass(val);
+    $.post('/' + $this.attr('id') + '/update_status', { status: val });
   });
 
   $this.dblclick(function() {
@@ -51,12 +49,11 @@ $('a', '.bl-new').click(function() {
       name: '',
       priority: 50
     }).find('.bl-item').initItem().insertBefore($(this).parent()).dblclick();
-  // var item = $(html).initItem().insertBefore($(this)).dblclick();
   item.find('.name').find('input').focus();
-  item.find('.close').hide();
   item.find('.update').find('a').text('Create').unbind('click').click(function() {
     updateItem('/', item, function() {
       cancelChanges(item);
+      item.addClass('new');
     });
     return false
   });
@@ -71,7 +68,8 @@ function updateItem(url, item, callback) {
     type: item.parents('section').find('h2').text(),
     name: item.find('.name').find('input').val(),
     desc: item.find('.desc').find('textarea').val(),
-    priority: item.find('.priority').find('input').val()
+    priority: item.find('.priority').find('input').val(),
+    status: item.find('select').val()
   };
   $.post(url, params, callback);
 };
@@ -92,7 +90,7 @@ $('a', '.remove').click(function() {
 });
 
 $.get('/', function(data) {
-  backlog = data.data;
+  // backlog = data.data;
   $('section').each(function() {
     var $this = $(this);
     var html = $('#template').clone().fillTemplate(data.data.filter(function (i) {
@@ -118,16 +116,20 @@ $.get('/', function(data) {
         if ( isNaN(nextPr) ) nextPr = 0;
         var itemPr = Math.floor((prevPr + nextPr) / 2);
         $item.find('.priority').text(itemPr);
-        $.post('/' + $item.attr('id') + '/reorder', { priority: itemPr });
+        $.post('/' + $item.attr('id') + '/update_priority', { priority: itemPr });
       }
     });
 }, 'json');
 
-function getItemById(id) {
-  for (var i = 0, l = backlog.length; i < l; i++) {
-    if ( backlog[i].id == id ) { 
-      return backlog[i]
-    };
-  };
-  console.error('item not found');
-};
+$('h2').click(function() {
+  $(this).parent().toggleClass('minimized');
+});
+
+// function getItemById(id) {
+//   for (var i = 0, l = backlog.length; i < l; i++) {
+//     if ( backlog[i].id == id ) { 
+//       return backlog[i]
+//     };
+//   };
+//   console.error('item not found');
+// };
